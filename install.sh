@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CNF=$(cat  /root/wireguard/wg-client.conf);
+CNF=$(cat  /root/doublevpn/wg-client.conf);
 
 ###################
 # Install git #
@@ -20,11 +20,11 @@ else
     echo "Ansible already installed"
 fi
 
-git clone https://github.com/it-toppp/wireguard.git && cd /root/wireguard/
+git clone https://github.com/it-toppp/doublevpn.git && cd /root/doublevpn/
 #####################################
 # Display real installation process #
 
-cd ./wireguard
+cd ./doublevpn
 ansible-playbook gen_conf.yml
 ansible-playbook mid.yml
 

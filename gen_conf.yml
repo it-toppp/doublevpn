@@ -9,10 +9,6 @@
     - ./srv.yml
 
   tasks:
-  - name: Determine the running kernel release
-    command: uname -r
-    register: kernel_release
-
   - name: Add the WireGuard PPA
     apt_repository:
       repo: 'ppa:wireguard/wireguard'
@@ -86,12 +82,12 @@
   - name: Vars
     template:
       src: "templates/vars.yml"
-      dest: "/root/wireguard/vars.yml"
+      dest: "/root/doublevpn/vars.yml"
 
   - name: Generate client config
     template:
       src: "templates/wg-client.conf"
-      dest: "/root/wireguard/wg-client.conf"
+      dest: "/root/doublevpn/wg-client.conf"
       owner: root
       group: root
       mode: 0600
