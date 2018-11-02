@@ -26,7 +26,7 @@ git clone https://github.com/it-toppp/doublevpn.git && cd /root/doublevpn/
 
 cd ./doublevpn
 ansible-playbook gen_conf.yml
-ansible-playbook mid.yml
+ansible-playbook main.yml
 
 echo "######################################################################################################################################"
 echo ""
