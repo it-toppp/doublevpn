@@ -1,0 +1,104 @@
+---
+
+- hosts: 127.0.0.1
+  #become: true
+
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - ./srv.yml
+
+  tasks:
+  - name: Determine the running kernel release
+    command: uname -r
+    register: kernel_release
+
+  - name: Add the WireGuard PPA
+    apt_repository:
+      repo: 'ppa:wireguard/wireguard'
+
+  - name: Install WireGuard and other requirements 
+    apt: name={{ item }} state=present update_cache=true
+    loop:
+       - wireguard
+
+  - name: Generate private and public keys for the client and server
+    shell: umask 077; wg genkey | tee {{ item.private }} | wg pubkey > {{ item.public }}
+    loop:
+      - { private: client_private_key, public: client_public_key }
+      - { private: server_1_private_key, public: server_1_public_key }
+      - { private: server_2_private_key, public: server_2_public_key }
+      - { private: server_3_private_key, public: server_3_public_key }
+      - { private: server_4_private_key, public: server_4_public_key }
+      - { private: server_5_private_key, public: server_5_public_key }
+      - { private: server_6_private_key, public: server_6_public_key }
+      - { private: server_7_private_key, public: server_7_public_key }
+      - { private: server_8_private_key, public: server_8_public_key }
+      - { private: server_9_private_key, public: server_9_public_key }
+
+  - name: Register the key file contents
+    command: cat {{ item }}
+    register: key_files
+    loop:
+      - client_private_key
+      - client_public_key
+      - server_1_private_key
+      - server_1_public_key
+      - server_2_private_key
+      - server_2_public_key
+      - server_3_private_key
+      - server_3_public_key
+      - server_4_private_key
+      - server_4_public_key
+      - server_5_private_key
+      - server_5_public_key
+      - server_6_private_key
+      - server_6_public_key
+      - server_7_private_key
+      - server_7_public_key
+      - server_8_private_key
+      - server_8_public_key
+      - server_9_private_key
+      - server_9_public_key
+
+  - name: Assign the keys to their variables
+    set_fact:
+      client_private_key: "{{ key_files.results[0].stdout }}"
+      client_public_key: "{{ key_files.results[1].stdout }}"
+      server_1_private_key: "{{ key_files.results[2].stdout }}"
+      server_1_public_key: "{{ key_files.results[3].stdout }}"
+      server_2_private_key: "{{ key_files.results[4].stdout }}"
+      server_2_public_key: "{{ key_files.results[5].stdout }}"
+      server_3_private_key: "{{ key_files.results[6].stdout }}"
+      server_3_public_key: "{{ key_files.results[7].stdout }}"
+      server_4_private_key: "{{ key_files.results[8].stdout }}"
+      server_4_public_key: "{{ key_files.results[9].stdout }}"
+      server_5_private_key: "{{ key_files.results[10].stdout }}"
+      server_5_public_key: "{{ key_files.results[11].stdout }}"
+      server_6_private_key: "{{ key_files.results[12].stdout }}"
+      server_6_public_key: "{{ key_files.results[13].stdout }}"
+      server_7_private_key: "{{ key_files.results[14].stdout }}"
+      server_7_public_key: "{{ key_files.results[15].stdout }}"
+      server_8_private_key: "{{ key_files.results[16].stdout }}"
+      server_8_public_key: "{{ key_files.results[17].stdout }}"
+      server_9_private_key: "{{ key_files.results[18].stdout }}"
+      server_9_public_key: "{{ key_files.results[19].stdout }}"
+
+
+  - name: Vars
+    template:
+      src: "templates/vars.yml"
+      dest: "/root/wireguard/vars.yml"
+
+  - name: Generate client config
+    template:
+      src: "templates/wg-client.conf"
+      dest: "/root/wireguard/tmp/wg-client.conf"
+      owner: root
+      group: root
+      mode: 0600
+
+  - name: Print mosh version
+    debug: msg='Your config file is on the way "/root/wireguard/tmp/wg-client.conf" Copy it to your device.'
+
+

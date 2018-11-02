@@ -1,0 +1,74 @@
+---
+
+- hosts: all
+  
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - ./vars.yml
+
+  tasks:
+  - name: Add the WireGuard PPA
+    apt_repository:
+      repo: 'ppa:wireguard/wireguard'
+
+  - name: Install WireGuard and other requirements
+    apt: name=wireguard state=present update_cache=true
+
+  - name: Enable IPv4 traffic forwarding
+    sysctl:
+      name: net.ipv4.ip_forward
+      value: 1
+      sysctl_set: yes
+      state: present
+      reload: yes
+ 
+  - name: Enable IPv4 forwarding continued
+    command: echo 1 > /proc/sys/net/ipv4/ip_forward.
+
+  - name: Add table
+    lineinfile: dest=/etc/iproute2/rt_tables line="1 mid"
+
+  - name: Generate config mid
+    template:
+      src: "templates/{{ item }}.conf"
+      dest: "/etc/wireguard/{{ item }}.conf"
+      owner: root
+      group: root
+      mode: 0600
+    loop:
+      - wg1
+      - wg2
+    when: next_srv is string
+
+  - name: Generate config gate
+    template:
+      src: "templates/wg-gate.conf"
+      dest: "/etc/wireguard/wg1.conf"
+      owner: root
+      group: root
+      mode: 0600
+    when: not next_srv
+
+  - name: Enable wireguard interface wg1
+    systemd:
+       name: wg-quick@wg1
+       enabled: yes
+       state: restarted
+    ignore_errors: yes
+
+  - name: Enable wireguard interface wg2
+    systemd:
+       name: wg-quick@wg2
+       enabled: yes
+       state: restarted
+    ignore_errors: yes
+    when: next_srv is string
+
+
+ 
+
+
+
+
+

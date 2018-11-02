@@ -1,0 +1,116 @@
+---
+all:
+ hosts:
+  srv1:
+   ansible_host: {{ srv1.ip }}
+   ansible_ssh_pass: {{ srv1.pas }}
+   number: 1
+   next: 2
+   before:
+   pri_key: {{ key_files.results[2].stdout }}
+   pub_key: {{ key_files.results[3].stdout }}
+   before_pub_key: {{ key_files.results[1].stdout }}
+   next_pub_key: {{ key_files.results[5].stdout }}
+   next_srv: {{ srv2.ip }}
+
+  srv2:
+   ansible_host: {{ srv2.ip }}
+   ansible_ssh_pass: {{ srv2.pas }}
+   number: 2
+   next: 3
+   before: 1
+   pri_key: {{ key_files.results[4].stdout }}
+   pub_key: {{ key_files.results[5].stdout }}
+   before_pub_key: {{ key_files.results[3].stdout }}
+   next_pub_key: {{ key_files.results[7].stdout }}
+   next_srv: {{ srv3.ip }}
+
+  srv3:
+   ansible_host: {{ srv3.ip }}
+   ansible_ssh_pass: {{ srv3.pas }}
+   number: 3
+   next: 4
+   before: 2
+   pri_key: {{ key_files.results[6].stdout }}
+   pub_key: {{ key_files.results[7].stdout }}
+   before_pub_key: {{ key_files.results[5].stdout }}
+   next_pub_key: {{ key_files.results[9].stdout }}
+   next_srv: {{ srv4.ip }}
+
+  srv4:
+   ansible_host: {{ srv4.ip }}
+   ansible_ssh_pass: {{ srv4.pas }}
+   number: 4
+   next: 5
+   before: 3
+   pri_key: {{ key_files.results[8].stdout }}
+   pub_key: {{ key_files.results[9].stdout }}
+   before_pub_key: {{ key_files.results[7].stdout }}
+   next_pub_key: {{ key_files.results[11].stdout }}
+   next_srv: {{ srv5.ip }}
+
+
+  srv5:
+   ansible_host: {{ srv5.ip }}
+   ansible_ssh_pass: {{ srv5.pas }}
+   number: 5
+   next: 6
+   before: 4
+   pri_key: {{ key_files.results[10].stdout }}
+   pub_key: {{ key_files.results[11].stdout }}
+   before_pub_key: {{ key_files.results[9].stdout }}
+   next_pub_key: {{ key_files.results[13].stdout }}
+   next_srv: {{ srv6.ip }}
+
+
+  srv6:
+   ansible_host: {{ srv6.ip }}
+   ansible_ssh_pass: {{ srv6.pas }}
+   number: 6
+   next: 7
+   before: 5
+   pri_key: {{ key_files.results[12].stdout }}
+   pub_key: {{ key_files.results[13].stdout }}
+   before_pub_key: {{ key_files.results[11].stdout }}
+   next_pub_key: {{ key_files.results[15].stdout }}
+   next_srv: {{ srv7.ip }}
+
+
+  srv7:
+   ansible_host: {{ srv7.ip }}
+   ansible_ssh_pass: {{ srv7.pas }}
+   number: 7
+   next: 8
+   before: 6
+   pri_key: {{ key_files.results[14].stdout }}
+   pub_key: {{ key_files.results[15].stdout }}
+   before_pub_key: {{ key_files.results[13].stdout }}
+   next_pub_key: {{ key_files.results[17].stdout }}
+   next_srv: {{ srv8.ip }}
+
+
+  srv8:
+   ansible_host: {{ srv8.ip }}
+   ansible_ssh_pass: {{ srv8.pas }}
+   number: 8
+   next: 9
+   before: 7
+   pri_key: {{ key_files.results[16].stdout }}
+   pub_key: {{ key_files.results[17].stdout }}
+   before_pub_key: {{ key_files.results[15].stdout }}
+   next_pub_key: {{ key_files.results[19].stdout }}
+   next_srv: {{ srv9.ip }}
+
+  srv9:
+   ansible_host: {{ srv9.ip }}
+   ansible_ssh_pass: {{ srv9.pas }}
+   number: 9
+   next: 10
+   before: 8
+   pri_key: {{ key_files.results[18].stdout }}
+   pub_key: {{ key_files.results[19].stdout }}
+   before_pub_key: {{ key_files.results[17].stdout }}
+
+
+
+
