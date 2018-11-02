@@ -18,9 +18,7 @@
       repo: 'ppa:wireguard/wireguard'
 
   - name: Install WireGuard and other requirements 
-    apt: name={{ item }} state=present update_cache=true
-    loop:
-       - wireguard
+    apt: name=wireguard  state=present update_cache=true
 
   - name: Generate private and public keys for the client and server
     shell: umask 077; wg genkey | tee {{ item.private }} | wg pubkey > {{ item.public }}
@@ -93,12 +91,10 @@
   - name: Generate client config
     template:
       src: "templates/wg-client.conf"
-      dest: "/root/wireguard/tmp/wg-client.conf"
+      dest: "/root/wireguard/wg-client.conf"
       owner: root
       group: root
       mode: 0600
 
-  - name: Print mosh version
-    debug: msg='Your config file is on the way "/root/wireguard/tmp/wg-client.conf" Copy it to your device.'
 
 
