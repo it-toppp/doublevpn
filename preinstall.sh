@@ -2,7 +2,7 @@
 
 ###################
 # Install git #
-apt-get install git -y
+apt-get install git mc -y
 ###################
 # Install ansible #
 if ! grep -q "ansible/ansible" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
