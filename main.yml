@@ -50,6 +50,14 @@
       mode: 0600
     when: not next_srv
 
+  - name: Disable wireguard interface wg2 gate
+    systemd:
+       name: wg-quick@wg2
+       enabled: no
+       state: stopped
+    ignore_errors: yes
+    when: next_srv is string
+
   - name: Enable wireguard interface wg1
     systemd:
        name: wg-quick@wg1
