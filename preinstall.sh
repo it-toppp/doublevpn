@@ -25,7 +25,7 @@ chmod +x ./install.sh
 echo "######################################################################################################################################"
 echo ""
 echo " Please go to the "doublevpn" directory and edit the "srv" file according to the template."
-echo " Then run "install.sh"
+echo " Then run install.sh"
 echo ""
 echo "######################################################################################################################################"
 
