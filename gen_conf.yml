@@ -64,7 +64,6 @@
      srv2_pas: "{{ pas2.user_input }}"
     when: srv_numbers|int >= 2
 
-
   - name: srv3 ip
     pause:
       prompt: "Enter IP address of the server №3"
@@ -183,7 +182,7 @@
 
   - name: Generate private and public keys for the client and server
     shell: umask 077; wg genkey | tee {{ item.private }} | wg pubkey > {{ item.public }}
-    with_items:
+    loop:
       - { private: client_private_key, public: client_public_key }
       - { private: server_1_private_key, public: server_1_public_key }
       - { private: server_2_private_key, public: server_2_public_key }
@@ -198,7 +197,7 @@
   - name: Register the key file contents
     command: cat {{ item }}
     register: key_files
-    with_items:
+    loop:
       - client_private_key
       - client_public_key
       - server_1_private_key
