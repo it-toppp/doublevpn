@@ -24,10 +24,10 @@ ansible-playbook gen_conf.yml
 ansible-playbook main.yml
 CNF=$(cat  /root/doublevpn/wg-client.conf);
 
-#rm  /root/doublevpn
 echo  "Please copy this content to your TunSafe configuration file"
 echo "######################################################################################################################################"
 echo ""
 echo "$CNF"
 echo ""
 echo "#######################################################################################################################################"
+rm -R /root/doublevpn
