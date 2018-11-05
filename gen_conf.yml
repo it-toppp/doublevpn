@@ -5,20 +5,185 @@
 
   vars:
     ansible_python_interpreter: "/usr/bin/python3"
-  vars_files:
-    - ./srv.yml
+    srv1_pas:
+    srv1_ip:
+    srv2_pas:
+    srv2_ip:
+    srv3_pas:
+    srv3_ip:
+    srv4_pas:
+    srv4_ip:
+    srv5_pas:
+    srv5_ip:
+    srv6_pas:
+    srv6_ip:
+    srv7_pas:
+    srv7_ip:
+    srv8_pas:
+    srv8_ip:
+    srv9_pas:
+    srv9_ip:
+
+  vars_prompt:
+
+    - name: srv_numbers
+      private: False
+      prompt: "Enter the number of servers"
 
   tasks:
-  - name: Add the WireGuard PPA
-    apt_repository:
-      repo: 'ppa:wireguard/wireguard'
+
+  - name: srv1 ip
+    pause:
+      prompt: "Enter IP address of the server №1"
+    register: ip1
+    when: srv_numbers|int >= 1
+  - name: srv1 pas
+    pause:
+      prompt: "Enter the password from the server №1"
+    register: pas1
+    when: srv_numbers|int >= 1
+  - name: srv1
+    set_fact:
+     srv1_ip: "{{ ip1.user_input }}"
+     srv1_pas: "{{ pas1.user_input }}"
+    when: srv_numbers|int >= 1
+
+  - name: srv2 ip
+    pause:
+      prompt: "Enter IP address of the server №2"
+    register: ip2
+    when: srv_numbers|int >= 2
+  - name: srv2 pas
+    pause:
+      prompt: "Enter the password from the server №2"
+    register: pas2
+    when: srv_numbers|int >= 2
+  - name: srv2
+    set_fact:
+     srv2_ip: "{{ ip2.user_input }}"
+     srv2_pas: "{{ pas2.user_input }}"
+    when: srv_numbers|int >= 2
+
+
+  - name: srv3 ip
+    pause:
+      prompt: "Enter IP address of the server №3"
+    register: ip3
+    when: srv_numbers|int >= 3
+  - name: srv3 pas
+    pause:
+      prompt: "Enter the password from the server №3"
+    register: pas3
+    when: srv_numbers|int >= 3
+  - name: srv3
+    set_fact:
+     srv3_ip: "{{ ip3.user_input }}"
+     srv3_pas: "{{ pas3.user_input }}"
+    when: srv_numbers|int >= 3
+
+  - name: srv4 ip
+    pause:
+      prompt: "Enter IP address of the server №4"
+    register: ip4
+    when: srv_numbers|int >= 4
+  - name: srv4 pas
+    pause:
+      prompt: "Enter the password from the server №4"
+    register: pas4
+    when: srv_numbers|int >= 4
+  - name: srv4
+    set_fact:
+     srv4_ip: "{{ ip4.user_input }}"
+     srv4_pas: "{{ pas4.user_input }}"
+    when: srv_numbers|int >= 4
+
+  - name: srv5 ip
+    pause:
+      prompt: "Enter IP address of the server №5"
+    register: ip5
+    when: srv_numbers|int >= 5
+  - name: srv5 pas
+    pause:
+      prompt: "Enter the password from the server №5"
+    register: pas5
+    when: srv_numbers|int >= 5
+  - name: srv5
+    set_fact:
+     srv5_ip: "{{ ip5.user_input }}"
+     srv5_pas: "{{ pas5.user_input }}"
+    when: srv_numbers|int >= 5
+
+  - name: srv6 ip
+    pause:
+      prompt: "Enter IP address of the server №6"
+    register: ip6
+    when: srv_numbers|int >= 6
+  - name: srv6 pas
+    pause:
+      prompt: "Enter the password from the server №6"
+    register: pas6
+    when: srv_numbers|int >= 6
+  - name: srv6
+    set_fact:
+     srv6_ip: "{{ ip6.user_input }}"
+     srv6_pas: "{{ pas6.user_input }}"
+    when: srv_numbers|int >= 6
+
+  - name: srv7 ip
+    pause:
+      prompt: "Enter IP address of the server №7"
+    register: ip7
+    when: srv_numbers|int >= 7
+  - name: srv7pas
+    pause:
+      prompt: "Enter the password from the server №7"
+    register: pas7
+    when: srv_numbers|int >= 7
+  - name: srv7
+    set_fact:
+     srv7_ip: "{{ ip7.user_input }}"
+     srv7_pas: "{{ pas7.user_input }}"
+    when: srv_numbers|int >= 7
+
+  - name: srv8 ip
+    pause:
+      prompt: "Enter IP address of the server №8"
+    register: ip8
+    when: srv_numbers|int >= 8
+  - name: srv8 pas
+    pause:
+      prompt: "Enter the password from the server №8"
+    register: pas8
+    when: srv_numbers|int >= 8
+  - name: srv8
+    set_fact:
+     srv8_ip: "{{ ip8.user_input }}"
+     srv8_pas: "{{ pas8.user_input }}"
+    when: srv_numbers|int >= 8
+
+  - name: srv9 ip
+    pause:
+      prompt: "Enter IP address of the server №9"
+    register: ip9
+    when: srv_numbers|int >= 9
+  - name: srv9 pas
+    pause:
+      prompt: "Enter the password from the server №9"
+    register: pas9
+    when: srv_numbers|int >= 9
+  - name: srv9
+    set_fact:
+     srv9_ip: "{{ ip9.user_input }}"
+     srv9_pas: "{{ pas9.user_input }}"
+    when: srv_numbers|int >= 9
+
 
   - name: Install WireGuard and other requirements 
     apt: name=wireguard  state=present update_cache=true
 
   - name: Generate private and public keys for the client and server
     shell: umask 077; wg genkey | tee {{ item.private }} | wg pubkey > {{ item.public }}
-    loop:
+    with_items:
       - { private: client_private_key, public: client_public_key }
       - { private: server_1_private_key, public: server_1_public_key }
       - { private: server_2_private_key, public: server_2_public_key }
@@ -33,7 +198,7 @@
   - name: Register the key file contents
     command: cat {{ item }}
     register: key_files
-    loop:
+    with_items:
       - client_private_key
       - client_public_key
       - server_1_private_key

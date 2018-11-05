@@ -1,16 +1,34 @@
 #!/bin/bash
 
-#####################################
-# Display real installation process #
+###################
+# Install git #
+apt-get install git mc -y
+###################
+# Install ansible #
+if ! grep -q "ansible/ansible" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+    echo "Adding Ansible PPA"
+    apt-add-repository ppa:ansible/ansible -y
+fi
+
+if ! hash ansible >/dev/null 2>&1; then
+    echo "Installing Ansible..."
+    apt-get update
+    apt-get install software-properties-common ansible git python-apt -y
+else
+    echo "Ansible already installed"
+fi
+
+#git clone https://github.com/it-toppp/doublevpn.git && cd /root/doublevpn/
 
 cd /root/doublevpn
 ansible-playbook gen_conf.yml
-CNF=$(cat  /root/doublevpn/wg-client.conf);
 ansible-playbook main.yml
+CNF=$(cat  /root/doublevpn/wg-client.conf);
+
+#rm  /root/doublevpn
 echo  "Please copy this content to your TunSafe configuration file"
 echo "######################################################################################################################################"
 echo ""
 echo "$CNF"
 echo ""
 echo "#######################################################################################################################################"
-
