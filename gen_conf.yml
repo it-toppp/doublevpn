@@ -176,6 +176,9 @@
      srv9_pas: "{{ pas9.user_input }}"
     when: srv_numbers|int >= 9
 
+  - name: Add the WireGuard PPA
+    apt_repository:
+      repo: 'ppa:wireguard/wireguard'
 
   - name: Install WireGuard and other requirements 
     apt: name=wireguard  state=present update_cache=true
