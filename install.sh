@@ -23,7 +23,7 @@ git clone https://github.com/it-toppp/doublevpn.git && cd /root/doublevpn/
 ansible-playbook gen_conf.yml
 ansible-playbook main.yml
 CNF=$(cat  /root/doublevpn/wg-client.conf);
-
+rm /root/install.sh
 echo  "Please copy this content to your TunSafe configuration file"
 echo "######################################################################################################################################"
 echo ""
