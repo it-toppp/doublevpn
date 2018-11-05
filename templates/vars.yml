@@ -3,7 +3,7 @@ all:
  hosts:
   srv1:
    ansible_host: {{ srv1_ip }}
-   ansible_ssh_pass: {{ srv1_pas }}
+   ansible_ssh_pass: "{{ srv1_pas }}"
    number: 1
    next: 2
    before:
@@ -15,7 +15,7 @@ all:
 
   srv2:
    ansible_host: {{ srv2_ip }}
-   ansible_ssh_pass: {{ srv2_pas }}
+   ansible_ssh_pass: "{{ srv2_pas }}"
    number: 2
    next: 3
    before: 1
@@ -27,7 +27,7 @@ all:
 
   srv3:
    ansible_host: {{ srv3_ip }}
-   ansible_ssh_pass: {{ srv3_pas }}
+   ansible_ssh_pass: "{{ srv3_pas }}"
    number: 3
    next: 4
    before: 2
@@ -39,7 +39,7 @@ all:
 
   srv4:
    ansible_host: {{ srv4_ip }}
-   ansible_ssh_pass: {{ srv4_pas }}
+   ansible_ssh_pass: "{{ srv4_pas }}"
    number: 4
    next: 5
    before: 3
@@ -52,7 +52,7 @@ all:
 
   srv5:
    ansible_host: {{ srv5_ip }}
-   ansible_ssh_pass: {{ srv5_pas }}
+   ansible_ssh_pass: "{{ srv5_pas }}"
    number: 5
    next: 6
    before: 4
@@ -65,7 +65,7 @@ all:
 
   srv6:
    ansible_host: {{ srv6_ip }}
-   ansible_ssh_pass: {{ srv6_pas }}
+   ansible_ssh_pass: "{{ srv6_pas }}"
    number: 6
    next: 7
    before: 5
@@ -78,7 +78,7 @@ all:
 
   srv7:
    ansible_host: {{ srv7_ip }}
-   ansible_ssh_pass: {{ srv7_pas }}
+   ansible_ssh_pass: "{{ srv7_pas }}"
    number: 7
    next: 8
    before: 6
@@ -91,7 +91,7 @@ all:
 
   srv8:
    ansible_host: {{ srv8_ip }}
-   ansible_ssh_pass: {{ srv8_pas }}
+   ansible_ssh_pass: "{{ srv8_pas }}"
    number: 8
    next: 9
    before: 7
@@ -103,7 +103,7 @@ all:
 
   srv9:
    ansible_host: {{ srv9_ip }}
-   ansible_ssh_pass: {{ srv9_pas }}
+   ansible_ssh_pass: "{{ srv9_pas }}"
    number: 9
    next: 10
    before: 8
