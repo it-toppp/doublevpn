@@ -110,7 +110,7 @@ all:
    pri_key: {{ key_files.results[18].stdout }}
    pub_key: {{ key_files.results[19].stdout }}
    before_pub_key: {{ key_files.results[17].stdout }}
-
+   next_srv:
 
 
 
