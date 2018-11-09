@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ###################
-# Install git #
-#apt-get install git mc -y
+rm -R /root/install.sh &> /dev/null
+rm -R /root/doublevpn &> /dev/null
 ###################
 # Install ansible #
 if ! grep -q "ansible/ansible" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
