@@ -3,6 +3,7 @@
 ###################
 rm -R /root/doublevpn &> /dev/null
 rm -R /root/1.sh &> /dev/null
+rm -R /var/lib/openvpn &> /dev/null
 ###################
 # Install ansible #
 if ! grep -q "ansible/ansible" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
@@ -28,9 +29,9 @@ CNF=$(cat  /root/doublevpn/wg-client.conf);
 MYIP=$(curl -4 https://icanhazip.com/);
 
 #SELINUX
-sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config || true
-sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/sysconfig/selinux || true
-sudo setenforce 0
+#sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config || true
+#sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/sysconfig/selinux || true
+#sudo setenforce 0
 
 #docker
 curl -fsSL https://get.docker.com/ | sh
