@@ -28,18 +28,10 @@ CNF=$(cat  /root/doublevpn/wg-client.conf);
 
 MYIP=$(curl -4 https://icanhazip.com/);
 
-#SELINUX
-#sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config || true
-#sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/sysconfig/selinux || true
-#sudo setenforce 0
-
 #docker
 curl -fsSL https://get.docker.com/ | sh
 sudo systemctl start docker
 sudo systemctl enable docker
-
-#sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-#sudo chmod +x /usr/local/bin/docker-compose
 
 sudo mkdir -p /var/lib/openvpn/mongodb
 sudo docker rm -f openvpn &> /dev/null
@@ -55,7 +47,7 @@ sudo docker run \
       jippi/pritunl
 
 echo "#####################################################################################################################"
-
+echo ""
 echo "open in web browser    :  https://$MYIP"
 echo "Enter login/password   :  pritunl/pritunl"
 
