@@ -24,7 +24,7 @@
       reload: yes
  
   - name: Enable IPv4 traffic forwarding now
-    command: echo 1 > /proc/sys/net/ipv4/ip_forward.
+    command: echo 1 > /proc/sys/net/ipv4/ip_forward
     
   - name: Disable ICMP
     sysctl:
