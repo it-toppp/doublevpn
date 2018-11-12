@@ -24,8 +24,8 @@ git clone https://github.com/it-toppp/doublevpn.git && cd /root/doublevpn/
 ansible-playbook gen_conf.yml
 echo "Please wait..."
 ansible-playbook main.yml &> /dev/null
-CNF=$(cat  /root/doublevpn/wg-client.conf);
 
+CNF=$(cat  /root/doublevpn/wg-client.conf);
 MYIP=$(curl -4 https://icanhazip.com/);
 
 #docker
@@ -46,11 +46,13 @@ sudo docker run \
     -v /var/lib/openvpn:/var/lib/pritunl \
       jippi/pritunl
 
+echo " If you want to use wireguard, copy this text"
 echo "#####################################################################################################################"
-echo ""
+echo "$CNF"
+echo "#####################################################################################################################"
+echo "If you want to use OpenVPN"
 echo "open in web browser    :  https://$MYIP"
 echo "Enter login/password   :  pritunl/pritunl"
 
-#docker exec -it openvpn /bin/bash | pritunl reset-password
 rm -R /root/doublevpn &> /dev/null
 rm -R /root/1.sh &> /dev/null
