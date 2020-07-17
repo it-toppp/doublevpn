@@ -6,18 +6,18 @@ rm -R /root/1.sh &> /dev/null
 rm -R /var/lib/openvpn &> /dev/null
 ###################
 # Install ansible #
-if ! grep -q "ansible/ansible" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
-    echo "Adding Ansible PPA"
-    apt-add-repository ppa:ansible/ansible -y
-fi
-
-if ! hash ansible >/dev/null 2>&1; then
-    echo "Installing Ansible..."
+#if ! grep -q "ansible/ansible" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+#    echo "Adding Ansible PPA"
+#    apt-add-repository ppa:ansible/ansible -y
+#fi
+#
+#if ! hash ansible >/dev/null 2>&1; then
+#    echo "Installing Ansible..."
     apt-get update
     apt-get install software-properties-common ansible git curl python-apt -y
-else
-    echo "Ansible already installed"
-fi
+#else
+#    echo "Ansible already installed"
+#fi
 
 git clone https://github.com/it-toppp/doublevpn.git && cd /root/doublevpn/
 
