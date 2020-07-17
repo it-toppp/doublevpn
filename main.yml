@@ -8,12 +8,6 @@
     - ./vars.yml
 
   tasks:
-- name: (Ubuntu) Update APT package cache
-  apt:
-    update_cache: "{{ wireguard_ubuntu_update_cache }}"
-    cache_valid_time: "{{ wireguard_ubuntu_cache_valid_time }}"
-  tags:
-    - wg-install
 
 - block:
   - name: (Ubuntu) Install support packages needed for Wireguard (for Ubuntu < 19.10)
