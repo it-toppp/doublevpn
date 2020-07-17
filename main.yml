@@ -8,14 +8,55 @@
     - ./vars.yml
 
   tasks:
-  - name: Add the WireGuard PPA
+- name: (Ubuntu) Update APT package cache
+  apt:
+    update_cache: "{{ wireguard_ubuntu_update_cache }}"
+    cache_valid_time: "{{ wireguard_ubuntu_cache_valid_time }}"
+  tags:
+    - wg-install
+
+- block:
+  - name: (Ubuntu) Install support packages needed for Wireguard (for Ubuntu < 19.10)
+    package:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - software-properties-common
+      - linux-headers-{{ ansible_kernel }}
+    tags:
+      - wg-install
+
+  - name: (Ubuntu) Add WireGuard repository (for Ubuntu < 19.10)
     apt_repository:
-      repo: 'ppa:wireguard/wireguard'
+      repo: "ppa:wireguard/wireguard"
+      state: present
+      update_cache: yes
+    tags:
+      - wg-install
 
-  - name: Install WireGuard and other requirements
-    apt: name=wireguard state=present update_cache=true
+  - name: (Ubuntu) Install wireguard packages (for Ubuntu < 19.10)
+    apt:
+      name:
+        - "wireguard-dkms"
+        - "wireguard-tools"
+      state: present
+    tags:
+      - wg-install
+  when:
+    - ansible_lsb.major_release is version('19.10', '<')
 
-  - name: Enable IPv4 traffic forwarding
+- block:
+  - name: (Ubuntu) Install wireguard-tools package (for Ubuntu > 19.04)
+    apt:
+      name: "wireguard-tools"
+      state: present
+    tags:
+      - wg-install
+  when:
+    - ansible_lsb.major_release is version('19.04', '>')
+
+- name: Enable IPv4 traffic forwarding
     sysctl:
       name: net.ipv4.ip_forward
       value: 1
@@ -23,10 +64,10 @@
       state: present
       reload: yes
  
-  - name: Enable IPv4 traffic forwarding now
+- name: Enable IPv4 traffic forwarding now
     command: echo 1 > /proc/sys/net/ipv4/ip_forward
     
-  - name: Disable ICMP
+- name: Disable ICMP
     sysctl:
       name: net.ipv4.icmp_echo_ignore_all
       value: 1
@@ -35,14 +76,14 @@
       reload: yes
     when: not next_srv
  
-  - name: Disable ICMP now
+- name: Disable ICMP now
     command: echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_all
     when: not next_srv
 
-  - name: Add table
+- name: Add table
     lineinfile: dest=/etc/iproute2/rt_tables line="1 mid"
 
-  - name: Generate config mid
+- name: Generate config mid
     template:
       src: "templates/{{ item }}.conf"
       dest: "/etc/wireguard/{{ item }}.conf"
@@ -54,7 +95,7 @@
       - wg2
     when: next_srv is string
 
-  - name: Generate config gate
+- name: Generate config gate
     template:
       src: "templates/wg-gate.conf"
       dest: "/etc/wireguard/wg1.conf"
@@ -63,7 +104,7 @@
       mode: 0600
     when: not next_srv
 
-  - name: Disable wireguard interface wg2 gate
+- name: Disable wireguard interface wg2 gate
     systemd:
        name: wg-quick@wg2
        enabled: no
@@ -71,14 +112,14 @@
     ignore_errors: yes
     when: not next_srv
 
-  - name: Enable wireguard interface wg1
+- name: Enable wireguard interface wg1
     systemd:
        name: wg-quick@wg1
        enabled: yes
        state: restarted
     ignore_errors: yes
 
-  - name: Enable wireguard interface wg2
+- name: Enable wireguard interface wg2
     systemd:
        name: wg-quick@wg2
        enabled: yes
