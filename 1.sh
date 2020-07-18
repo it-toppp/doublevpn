@@ -14,7 +14,7 @@ rm -R /var/lib/openvpn &> /dev/null
 #if ! hash ansible >/dev/null 2>&1; then
 #    echo "Installing Ansible..."
     apt-get update
-    apt-get install software-properties-common ansible git curl python-apt -y
+    apt-get install software-properties-common ansible git curl sshpass python-apt -y
 #else
 #    echo "Ansible already installed"
 #fi
