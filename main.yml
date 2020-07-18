@@ -9,7 +9,7 @@
 
   tasks:
 
-- name: (Ubuntu) Install wireguard-tools package (for Ubuntu > 19.04)
+  - name: (Ubuntu) Install wireguard-tools package (for Ubuntu > 19.04)
     apt:
       name: "wireguard-tools"
       state: present
@@ -43,7 +43,7 @@
   - name: Add table
     lineinfile: dest=/etc/iproute2/rt_tables line="1 mid"
 
-- name: Generate config mid
+  - name: Generate config mid
     template:
       src: "templates/{{ item }}.conf"
       dest: "/etc/wireguard/{{ item }}.conf"
