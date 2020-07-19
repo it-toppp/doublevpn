@@ -23,7 +23,7 @@ git clone https://github.com/it-toppp/doublevpn.git && cd /root/doublevpn/
 
 ansible-playbook gen_conf.yml
 echo "Please wait..."
-ansible-playbook main.yml
+ansible-playbook main.yml &> /dev/null
 
 CNF=$(cat  /root/doublevpn/wg-client.conf);
 MYIP=$(curl -4 https://icanhazip.com/);
